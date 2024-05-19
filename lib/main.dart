@@ -7,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
+import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
 import 'package:splitter_movil_frontend/src/routes/routes.dart';
 
 void main() async {
@@ -31,7 +32,9 @@ class AppState extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MultiProvider(
-      providers: [],
+      providers: [
+        ChangeNotifierProvider(create: (_) => NavigatorProvider()),
+      ],
       child: const MyApp(),
     );
   }
@@ -40,37 +43,25 @@ class AppState extends StatelessWidget {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Splitter movil',
+      initialRoute: 'login-page',
+      onGenerateRoute: router.onGenerateRoute,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es'),
+      ],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        useMaterial3: false,
+        colorScheme: const ColorScheme.light().copyWith(primary: azulColor),
       ),
     );
   }
-}
-
-@override
-Widget build(BuildContext context) {
-  return MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'Splitter movil',
-    initialRoute: 'login-page',
-    onGenerateRoute: router.onGenerateRoute,
-    localizationsDelegates: const [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [
-      Locale('es'),
-    ],
-    theme: ThemeData(
-      useMaterial3: false,
-      colorScheme: const ColorScheme.light().copyWith(primary: azulColor),
-    ),
-  );
 }
