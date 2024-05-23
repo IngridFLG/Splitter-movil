@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-
+import 'package:splitter_movil_frontend/src/pages/temas/tema_inicio.dart';
 
 final Map<String, Widget> _pages = {
-  //Perfil
-  
+  //inicio
+  TemaInicio.name: const TemaInicio(),
 };
 
 final Map<int, String> _index = {
-  0: "",
-  1: "",
-  2: "",
+  0: TemaInicio.name,
+  1: TemaInicio.name,
+  2: TemaInicio.name,
 };
 
 String getNamePageByIndex(int i) {

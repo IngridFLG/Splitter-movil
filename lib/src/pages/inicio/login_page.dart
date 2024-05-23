@@ -123,6 +123,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
+    Navigator.pushNamed(context, "home-page");
     // final servicePorvider =
     //     Provider.of<ServicesProvider>(context, listen: false);
     // if (!_formKey.currentState!.validate()) {

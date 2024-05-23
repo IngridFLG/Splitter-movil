@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
               Container(
                 padding: const EdgeInsets.all(2),
                 child: SvgPicture.asset(
-                  'assets/iconos/iconUsuarioCirculo.svg',
+                  'assets/iconos/Book_check.svg',
                   color: provider.tab.index == 0 ? blancoColor : grisClaroColor,
                   height: size.width * 0.07,
                 ),
@@ -53,53 +53,24 @@ class _HomeState extends State<Home> {
               Container(
                 padding: const EdgeInsets.all(2),
                 child: SvgPicture.asset(
-                  'assets/iconos/iconCampana.svg',
+                  'assets/iconos/Video.svg',
                   color: provider.tab.index == 1 ? blancoColor : grisClaroColor,
                   height: size.width * 0.07,
                 ),
               ),
               Container(
-                height: provider.tab.index == 2 ? 50 : 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: provider.tab.index == 1 ? blancoColor : blancoColor,
-                ),
-                padding: const EdgeInsets.all(2),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: SizedBox(
-                      width: 50,
-                      height: 30,
-                      child: Image.asset(
-                        'assets/imagenes/Nuviicon.png',
-                        height: size.width * 0.08,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
                 padding: const EdgeInsets.all(2),
                 child: SvgPicture.asset(
-                  'assets/iconos/iconTelefono.svg',
+                  'assets/iconos/Sign_in_squre.svg',
                   color: provider.tab.index == 3 ? blancoColor : grisClaroColor,
-                  height: size.width * 0.07,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(2),
-                child: SvgPicture.asset(
-                  'assets/iconos/iconCorrespondencia.svg',
-                  color: provider.tab.index == 4 ? blancoColor : grisClaroColor,
                   height: size.width * 0.07,
                 ),
               ),
             ],
             color: blancoColor,
-            buttonBackgroundColor: azulColor,
-            backgroundColor: Colors.transparent,
-            animationCurve: Curves.easeInOut,
+            buttonBackgroundColor: rojoColor,
+            backgroundColor: Color.fromARGB(255, 65, 65, 65),
+            animationCurve: Curves.bounceIn,
             animationDuration: const Duration(milliseconds: 600),
             onTap: (int tappedIndex) {
               setState(() {
