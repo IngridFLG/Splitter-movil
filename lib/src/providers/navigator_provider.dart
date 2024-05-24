@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NavigatorProvider extends ChangeNotifier {
-  TabProvider _tab = TabProvider(index: 2, page: 'servicios-home-page');
+  TabProvider _tab = TabProvider(index: 1, page: 'tema-inicio-page');
   final List<TabProvider> _stackPage = [
-    TabProvider(index: 2, page: 'servicios-home-page')
+    TabProvider(index: 1, page: 'tema-inicio-page')
   ];
 
   TabProvider get tab => _tab;
@@ -45,7 +45,7 @@ class NavigatorProvider extends ChangeNotifier {
   ///Resetar la pila
   void reset() {
     _stackPage.clear();
-    _setTab = TabProvider(index: 2, page: 'servicios-home-page');
+    _setTab = TabProvider(index: 1, page: 'tema-inicio-page');
     notifyListeners();
   }
 }

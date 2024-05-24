@@ -67,11 +67,11 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ],
-            color: blancoColor,
+            color: const Color.fromARGB(255, 65, 65, 65),
             buttonBackgroundColor: rojoColor,
-            backgroundColor: Color.fromARGB(255, 65, 65, 65),
-            animationCurve: Curves.bounceIn,
-            animationDuration: const Duration(milliseconds: 600),
+            backgroundColor: Colors.transparent,
+            animationCurve: Curves.linear,
+            animationDuration: const Duration(milliseconds: 300),
             onTap: (int tappedIndex) {
               setState(() {
                 provider.push(
