@@ -360,3 +360,39 @@ Widget texto(
     textAlign: textalign,
   ));
 }
+
+Row TemaWidget(String imagen, String tema) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 65, 65, 65),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20), topLeft: Radius.circular(20)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Image.asset(
+              'assets/imagenes/$imagen',
+              height: 50,
+              width: 80,
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+              color: rojoColor,
+              borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  topRight: Radius.circular(20))),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            width: 200,
+            height: 70,
+            child: texto(tema, fontApp, 17, blancoColor, TextAlign.center),
+          ),
+        )
+      ],
+    );
+  }

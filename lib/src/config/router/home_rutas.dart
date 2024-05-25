@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:splitter_movil_frontend/src/pages/temas/equivalencia/equivalencia_page.dart';
-import 'package:splitter_movil_frontend/src/pages/temas/fraccion/concepto_page.dart';
-import 'package:splitter_movil_frontend/src/pages/temas/multi_dividir/multiplicar_page.dart';
-import 'package:splitter_movil_frontend/src/pages/temas/simplificar/simplificar_page.dart';
-import 'package:splitter_movil_frontend/src/pages/temas/sumar_restar/sumar_page.dart';
-import 'package:splitter_movil_frontend/src/pages/temas/tema_inicio.dart';
+import 'package:splitter_movil_frontend/src/pages/pages.dart';
+
 
 final Map<String, Widget> _pages = {
   //inicio
@@ -15,9 +11,12 @@ final Map<String, Widget> _pages = {
 
   // Simplificar fracciones
   SimplificarPage.name: const SimplificarPage(),
+  EjemplosSimplificarPage.name: const EjemplosSimplificarPage(),
+  EjercicioSimplificarPage.name: const EjercicioSimplificarPage(),
 
   // Fracciones equivalentes
   EquivalenciaPage.name: const EquivalenciaPage(),
+  EjercicioEquivalenciaPage.name: const EjercicioEquivalenciaPage(),
 
   // Sumar y restar fracciones
   SumarPage.name: const SumarPage(),
