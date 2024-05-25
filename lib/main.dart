@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
 import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
-import 'package:splitter_movil_frontend/src/routes/routes.dart';
+import 'package:splitter_movil_frontend/src/config/router/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

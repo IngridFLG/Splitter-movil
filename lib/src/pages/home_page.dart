@@ -4,18 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
 import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
-import 'package:splitter_movil_frontend/src/routes/home_rutas.dart';
+import 'package:splitter_movil_frontend/src/config/router/home_rutas.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static const name = 'home-page';
 
-  const Home({super.key});
+  const HomePage({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

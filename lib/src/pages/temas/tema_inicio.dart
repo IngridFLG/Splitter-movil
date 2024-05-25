@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
+import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
 import 'package:splitter_movil_frontend/src/widgets/widgets.dart';
 
 class TemaInicio extends StatefulWidget {
@@ -17,6 +19,7 @@ class _TemaInicioState extends State<TemaInicio> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final navigator = Provider.of<NavigatorProvider>(context, listen: false);
     return Scaffold(
       body: SizedBox(
         child: Padding(
@@ -46,30 +49,50 @@ class _TemaInicioState extends State<TemaInicio> {
                             negroColor, TextAlign.center),
                         separadorVertical(context, 5),
                         InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              navigator.push(
+                                page: 'concepto-page',
+                              );
+                            },
                             child: TemaWidget(
                                 'tema1.png', 'Tema 1: Concepto de fracción')),
                         separadorVertical(context, 5),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            navigator.push(
+                                page: 'simplificar-page',
+                              );
+                          },
                           child: TemaWidget(
                               'tema2.png', 'Tema 2: Simplificar fracciones'),
                         ),
                         separadorVertical(context, 5),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            navigator.push(
+                                page: 'equivalencia-page',
+                              );
+                          },
                           child: TemaWidget(
                               'tema3.png', 'Tema 3: Fracciones equivalentes'),
                         ),
                         separadorVertical(context, 5),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            navigator.push(
+                                page: 'sumar-page',
+                              );
+                          },
                           child: TemaWidget(
                               'tema4.png', 'Tema 4: Sumar y restar fracciones'),
                         ),
                         separadorVertical(context, 5),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            navigator.push(
+                                page: 'multiplicar-page',
+                              );
+                          },
                           child: TemaWidget('tema5.png',
                               'Tema 5: Multiplicar y dividir fracciones'),
                         ),
