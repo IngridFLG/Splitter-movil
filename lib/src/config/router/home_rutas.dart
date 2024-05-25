@@ -20,9 +20,11 @@ final Map<String, Widget> _pages = {
 
   // Sumar y restar fracciones
   SumarPage.name: const SumarPage(),
+  EjercicioSumaRestaPage.name: const EjercicioSumaRestaPage(),
 
   // Multiplicar y dividir fracciones
   MultiplicarPage.name: const MultiplicarPage(),
+  EjercicioMultiDividirPage.name: const EjercicioMultiDividirPage(),
 };
 
 final Map<int, String> _index = {

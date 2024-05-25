@@ -16,6 +16,8 @@ export 'package:splitter_movil_frontend/src/pages/temas/equivalencia/ejercicio_e
 
 // Sumar-restar
 export 'package:splitter_movil_frontend/src/pages/temas/sumar_restar/sumar_page.dart';
+export 'package:splitter_movil_frontend/src/pages/temas/sumar_restar/ejercicio_suma_resta_page.dart';
 
 // Multiplicar/dividt
 export 'package:splitter_movil_frontend/src/pages/temas/multi_dividir/multiplicar_page.dart';
+export 'package:splitter_movil_frontend/src/pages/temas/multi_dividir/ejercicio_multi_dividir_page.dart';
