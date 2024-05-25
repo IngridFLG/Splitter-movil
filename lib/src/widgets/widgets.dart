@@ -396,3 +396,205 @@ Row TemaWidget(String imagen, String tema) {
       ],
     );
   }
+
+  class AlertaVolver extends StatefulWidget {
+  /// Ancho de la ventana de alerta en porcentaje respecto al ancho de la pantalla.
+  final double width;
+
+  /// Altura de la ventana de alerta en porcentaje respecto a la altura de la pantalla.
+  final double height;
+
+  /// Ancho del botón en porcentaje respecto al ancho de la pantalla.
+  final double widthButton;
+
+  final Image image;
+
+  /// Mensaje opcional que se muestra en la ventana de alerta.
+  final String? mensaje;
+
+  /// Texto del botón de la ventana de alerta.
+  final String textoBoton;
+
+  /// Función que se ejecutará al presionar el botón de la ventana de alerta.
+  final Function() function;
+  final Function()? functionAceptar;
+  final bool? dobleBoton;
+
+  /// Constructor para crear instancias de la clase [Alertas].
+  const AlertaVolver({
+    super.key,
+    required this.width,
+    required this.height,
+    this.mensaje,
+    required this.function,
+    required this.widthButton,
+    required this.textoBoton,
+    required this.image,
+    this.functionAceptar,
+    this.dobleBoton,
+  });
+
+  @override
+  State<AlertaVolver> createState() => _AlertaVolverState();
+}
+
+class _AlertaVolverState extends State<AlertaVolver> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: blancoColor,
+      content: Container(
+        width: widget.width,
+        height: widget.height,
+        decoration: BoxDecoration(
+          color: blancoColor,
+          borderRadius: BorderRadius.circular(
+            MediaQuery.of(context).size.width * (widget.width / 100) / 100,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Título de la alerta
+            widget.image,
+            separadorVertical(context, 1),
+            // Mensaje opcional de la alerta
+            texto(
+              widget.mensaje ?? '',
+              fontApp,
+              16,
+              negroColor,
+              TextAlign.center,
+            ),
+            separadorVertical(context, 1),
+            // Botón de la alerta
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: widget.function,
+                  child: botonCancelar(
+                    context,
+                    widget.widthButton,
+                    5,
+                    widget.textoBoton,
+                  ),
+                ),
+                widget.dobleBoton == null
+                    ? separadorHorizontal(context, 4)
+                    : const SizedBox(),
+                widget.dobleBoton == null
+                    ? InkWell(
+                        onTap: widget.functionAceptar,
+                        child: botonAceptar(
+                          context,
+                          widget.widthButton,
+                          5,
+                          "Aceptar",
+                          14,
+                        ),
+                      )
+                    : const SizedBox()
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget botonCancelar(
+    BuildContext context, widthButton, heightButton, textButton) {
+  return Container(
+    width: MediaQuery.of(context).size.width * widthButton / 100,
+    height: MediaQuery.of(context).size.height * heightButton / 100,
+    decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        border: Border.all(color: negroColor, width: 1.5)),
+    child: Center(
+        child: texto(
+      textButton,
+      fontBold,
+      bigSize,
+      negroColor,
+      TextAlign.center,
+    )),
+  );
+}
+Widget botonAceptar(
+    BuildContext context, widthButton, heightButton, textButton, size,
+    [Color? colorBtn]) {
+  return Container(
+    width: MediaQuery.of(context).size.width * widthButton / 100,
+    height: MediaQuery.of(context).size.height * heightButton / 100,
+    decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        color: colorBtn ?? rojoColor),
+    child: Center(
+        child: texto(
+      textButton,
+      fontApp,
+      size,
+      blancoColor,
+      TextAlign.center,
+    )),
+  );
+}
+
+class Pregunta extends StatefulWidget {
+  final String pregunta;
+  final List<String> respuestas;
+  final Color colorActivo;
+  final Function(int) onRespuestaSeleccionada;
+
+  const Pregunta({
+    super.key,
+    required this.pregunta,
+    required this.respuestas,
+    required this.colorActivo,
+    required this.onRespuestaSeleccionada,
+  });
+
+  @override
+  _PreguntaState createState() => _PreguntaState();
+}
+
+class _PreguntaState extends State<Pregunta> {
+  int? _selectedRespuesta;
+
+  void _handleAnswerTap(int value) {
+    setState(() {
+      _selectedRespuesta = value;
+    });
+    widget.onRespuestaSeleccionada(value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        texto(widget.pregunta, fontApp, bigSize, negroColor, TextAlign.center),
+        Column(
+          children: List.generate(widget.respuestas.length, (index) {
+            return ListTile(
+              title: Text(widget.respuestas[index]),
+              leading: Radio(
+                activeColor: widget.colorActivo,
+                value: index,
+                groupValue: _selectedRespuesta,
+                onChanged: (int? value) {
+                  if (value != null) {
+                    _handleAnswerTap(value);
+                  }
+                },
+              ),
+            );
+          }),
+        ),
+      ],
+    );
+  }
+}
