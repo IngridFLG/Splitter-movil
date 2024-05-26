@@ -7,7 +7,7 @@ import 'package:splitter_movil_frontend/src/services/mixins/tema_service.dart';
 class TemaServiceImpl with TemaService {
   @override
   Future<List<TemaModel>> listarTemas(String token) async {
-    final String url = '$baseUrl/splitter/v1/temas/all';
+    final String url = '$urlBase/splitter/v1/temas/all';
 
     final headers = <String, String>{
       'Content-Type': 'application/json',

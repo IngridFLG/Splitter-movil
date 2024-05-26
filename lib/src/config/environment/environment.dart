@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String baseUrl = 'http://18.116.169.179';
+String urlBase = 'http://184.72.72.79:8080';
 
 Color blancoColor = const Color.fromARGB(255, 255, 255, 255);
 Color blancoClaroColor = const Color.fromARGB(218, 255, 255, 255);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:splitter_movil_frontend/src/services/implements/resultado_service_impl.dart';
 import 'package:splitter_movil_frontend/src/services/implements/tema_service_impl.dart';
-import 'package:splitter_movil_frontend/src/services/implements/usuario_Service_impl.dart';
+import 'package:splitter_movil_frontend/src/services/implements/usuario_service_impl.dart';
 import 'package:splitter_movil_frontend/src/services/mixins/resultado_service.dart';
 import 'package:splitter_movil_frontend/src/services/mixins/tema_service.dart';
 import 'package:splitter_movil_frontend/src/services/mixins/usuario_service.dart';

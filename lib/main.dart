@@ -10,6 +10,7 @@ import 'package:splitter_movil_frontend/src/config/environment/environment.dart'
 import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
 import 'package:splitter_movil_frontend/src/config/router/routes.dart';
 import 'package:splitter_movil_frontend/src/providers/services_provider.dart';
+import 'package:splitter_movil_frontend/src/providers/usuario_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => NavigatorProvider()),
         ChangeNotifierProvider(create: (_) => ServicesProvider()),
+        ChangeNotifierProvider(create: (_) => UsuarioProvider()), 
       ],
       child: const MyApp(),
     );

@@ -18,13 +18,13 @@ class ResultadoformModel {
     factory ResultadoformModel.fromJson(Map<String, dynamic> json) => ResultadoformModel(
         puntaje: json["puntaje"]?.toDouble(),
         idTema: json["idTema"],
-        idUsuario: json["idUsuario"],
+        idUsuario: json["idUser"],
     );
 
     Map<String, dynamic> toJson() => {
         "puntaje": puntaje,
         "idTema": idTema,
-        "idUsuario": idUsuario,
+        "idUser": idUsuario,
     };
 }
 

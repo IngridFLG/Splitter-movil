@@ -9,7 +9,7 @@ class ResultadoServiceImpl with ResultadoService {
   @override
   Future<Response> registrarResultado(
       String token, ResultadoformModel resultado) async {
-    final String url = '$baseUrl/splitter/v1/resultados/guardarResultado';
+    final String url = '$urlBase/splitter/v1/resultados/guardarResultado';
 
     final headers = <String, String>{
       'Content-Type': 'application/json',

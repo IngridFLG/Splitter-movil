@@ -1,8 +1,10 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
 import 'package:splitter_movil_frontend/src/helpers/helperts.dart';
+import 'package:splitter_movil_frontend/src/models/usuario_model.dart';
+import 'package:splitter_movil_frontend/src/providers/services_provider.dart';
+import 'package:splitter_movil_frontend/src/providers/usuario_provider.dart';
 import 'package:splitter_movil_frontend/src/widgets/widgets.dart';
 
 class LoginPage extends StatefulWidget {
@@ -36,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         body: SingleChildScrollView(
             child: Container(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: const Color.fromARGB(255, 255, 255, 255),
                 height: size.height,
                 width: size.width,
                 child: Stack(children: [
@@ -123,52 +125,64 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
-    Navigator.pushNamed(context, "home-page");
-    // final servicePorvider =
-    //     Provider.of<ServicesProvider>(context, listen: false);
-    // if (!_formKey.currentState!.validate()) {
-    //   return;
-    // }
-    // LoginModel loginRequest = LoginModel(
-    //   correo: _controllerCorreo.text,
-    //   contrasena: _controllerContrasena.text,
-    // );
+    LoginModel loginRequest = LoginModel(
+        contrasena: _controllerContrasena.text, correo: _controllerCorreo.text);
+    final servicePorvider =
+        Provider.of<ServicesProvider>(context, listen: false);
+    final response = await servicePorvider.usuarioService.login(loginRequest);
+    if (response.type == 'success') {
+      // ignore: use_build_context_synchronously
+      // obtenerInfoUsuario(_controllerCorreo.value.text, response.msg!, context);
 
-    // final response = await servicePorvider.authService.login(loginRequest);
+      // ignore: use_build_context_synchronously
+      obtenerTemas(response.msg!, context);
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, "home-page");
+    } else {
+      // ignore: use_build_context_synchronously
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertaVolver(
+          width: 250,
+          height: 200,
+          function: () {
+            Navigator.of(context).pop();
+          },
+          widthButton: 40,
+          textoBoton: 'Volver',
+          image: Image.asset('assets/imagenes/warning.jpg', height: 80),
+          mensaje: response.msg,
+          dobleBoton: false,
+        ),
+      );
+    }
+  }
 
-    // if (response['type'].toString().toLowerCase() == 'success') {
-    //   // ignore: use_build_context_synchronously
-    //   final provider = Provider.of<DatosGlobalesProvider>(context, listen: false);
-    //   // ignore: use_build_context_synchronously
-    //   final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    //   usuarioProvider.setToken(response['msg']['token']);
-    //   provider.data.addAll({
-    //     'token': response['msg']['token'],
-    //     'vigilanteId': response['msg']['usuarioid'],
-    //     'residenciaId': response['msg']['residenciaid'],
-    //   });
+  Future<void> obtenerInfoUsuario(
+      String correo, String token, BuildContext context) async {
+    final servicePorvider =
+        Provider.of<ServicesProvider>(context, listen: false);
+    final response =
+        await servicePorvider.usuarioService.detalleUsuario(correo, token);
 
-    //   // ignore: use_build_context_synchronously
-    //   Navigator.pushNamed(context, "home-page");
-    // } else {
-    //   showDialog(
-    //       // ignore: use_build_context_synchronously
-    //       context: context,
-    //       builder: (context) => AlertaVolver(
-    //             width: 300,
-    //             height: 250,
-    //             function: () {
-    //               Navigator.of(context).pop();
-    //             },
-    //             widthButton: 50,
-    //             textoBoton: 'Volver',
-    //             image: Image.asset(
-    //               'assets/imagenes/nuvi-alert.png',
-    //               height: 100,
-    //             ),
-    //             mensaje: response['msg'],
-    //           ));
-    // }
-    // return;
+    
+    final usuarioProvider =
+    // ignore: use_build_context_synchronously
+        Provider.of<UsuarioProvider>(context, listen: false);
+    usuarioProvider.setToken(token);
+    usuarioProvider.setUsuario(response);
+  }
+
+  Future<void> obtenerTemas( String token, BuildContext context) async {
+    final servicePorvider =
+        Provider.of<ServicesProvider>(context, listen: false);
+    final response =
+        await servicePorvider.temaService.listarTemas(token);
+
+    final usuarioProvider =
+    // ignore: use_build_context_synchronously
+        Provider.of<UsuarioProvider>(context, listen: false);
+    usuarioProvider.setTemas(response);
   }
 }
