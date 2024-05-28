@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
     final response = await servicePorvider.usuarioService.login(loginRequest);
     if (response.type == 'success') {
       // ignore: use_build_context_synchronously
-      // obtenerInfoUsuario(_controllerCorreo.value.text, response.msg!, context);
+      obtenerInfoUsuario(_controllerCorreo.value.text, response.msg!, context);
 
       // ignore: use_build_context_synchronously
       obtenerTemas(response.msg!, context);
@@ -166,22 +166,20 @@ class _LoginPageState extends State<LoginPage> {
     final response =
         await servicePorvider.usuarioService.detalleUsuario(correo, token);
 
-    
     final usuarioProvider =
-    // ignore: use_build_context_synchronously
+        // ignore: use_build_context_synchronously
         Provider.of<UsuarioProvider>(context, listen: false);
     usuarioProvider.setToken(token);
     usuarioProvider.setUsuario(response);
   }
 
-  Future<void> obtenerTemas( String token, BuildContext context) async {
+  Future<void> obtenerTemas(String token, BuildContext context) async {
     final servicePorvider =
         Provider.of<ServicesProvider>(context, listen: false);
-    final response =
-        await servicePorvider.temaService.listarTemas(token);
+    final response = await servicePorvider.temaService.listarTemas(token);
 
     final usuarioProvider =
-    // ignore: use_build_context_synchronously
+        // ignore: use_build_context_synchronously
         Provider.of<UsuarioProvider>(context, listen: false);
     usuarioProvider.setTemas(response);
   }

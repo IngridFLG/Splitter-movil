@@ -7,16 +7,15 @@ import 'package:splitter_movil_frontend/src/providers/services_provider.dart';
 import 'package:splitter_movil_frontend/src/providers/usuario_provider.dart';
 import 'package:splitter_movil_frontend/src/widgets/widgets.dart';
 
-class EjercicioSimplificarPage extends StatefulWidget {
-  static const name = "ejercicio-simplificar-page";
-  const EjercicioSimplificarPage({super.key});
+class EjercicioConceptoPage extends StatefulWidget {
+  static const name = "ejercicio-concepto-page";
+  const EjercicioConceptoPage({super.key});
 
   @override
-  State<EjercicioSimplificarPage> createState() =>
-      _EjercicioSimplificarPageState();
+  State<EjercicioConceptoPage> createState() => _EjercicioConceptoPageState();
 }
 
-class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
+class _EjercicioConceptoPageState extends State<EjercicioConceptoPage> {
   int? _selectedRespuesta1;
   int? _selectedRespuesta2;
   int? _selectedRespuesta3;
@@ -44,7 +43,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
   }
 
   void _validarRespuestas() async {
-    List<int> respuestasCorrectas = [1, 1, 0, 0];
+    List<int> respuestasCorrectas = [1, 0, 0, 2];
     double puntaje = 0;
 
     if (_selectedRespuesta1 == respuestasCorrectas[0]) {
@@ -85,7 +84,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
 
     String token = usuarioProvider.token!;
     int usuarioId = usuarioProvider.usuario!.id;
-    int temaId = usuarioProvider.buscarTemaPorNombre("Simplificar fracciones")!;
+    int temaId = usuarioProvider.buscarTemaPorNombre("Concepto de fracción")!;
     ResultadoformModel resultado = ResultadoformModel(
         puntaje: puntaje, idTema: temaId, idUsuario: usuarioId);
 
@@ -101,11 +100,11 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
         context: context,
         builder: (context) => AlertaVolver(
           width: 200,
-          height: 150,
+          height: 210,
           function: () {
             Navigator.of(context).pop();
           },
-          widthButton: 10,
+          widthButton: 30,
           textoBoton: 'Volver',
           image: Image.asset(imagen, height: 80),
           mensaje: mensaje,
@@ -119,7 +118,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
         context: context,
         builder: (context) => AlertaVolver(
           width: 200,
-          height: 150,
+          height: 210,
           function: () {
             Navigator.of(context).pop();
           },
@@ -138,21 +137,26 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
     final navigator = Provider.of<NavigatorProvider>(context, listen: false);
 
     List<String> respuestas1 = [
-      "A) Multiplicar el numerador y el denominador por el mismo número.",
-      "B) Dividir el numerador y el denominador por su máximo común divisor (MCD).",
-      "C) Sumar el numerador y el denominador.",
-      "D) Restar el denominador del numerador."
+      "A) La cantidad total de partes en que se divide el todo.",
+      "B) La cantidad de partes que se toman del total.",
+      "C) El tipo de fracción.",
+      "D) La línea que separa el numerador del denominador."
     ];
 
-    List<String> respuestas2 = ["A) 2", "B) 6", "C) 4", "D) 8"];
+    List<String> respuestas2 = [
+      "A) Cinco de seis.",
+      "B) Seis de cinco.",
+      "C) Cinco por seis",
+      "D) Seis por cinco."
+    ];
 
-    List<String> respuestas3 = ["A) 2/3", "B) 3/6", "C) 1/2", "D) 3/4"];
+    List<String> respuestas3 = ["A) 3/8", "B) 8/3", "C) 1/3", "D) 3/5"];
 
     List<String> respuestas4 = [
-      "A) 10/20 = 1/2",
-      "B) 15/25 = 5/10",
-      "C) 18/24 = 3/4",
-      "D) 8/12 = 4/5"
+      "A) La cantidad de partes que se toman del total.",
+      "B) El tipo de fracción.",
+      "C) La cantidad total de partes en que se divide el todo.",
+      "D) La línea que separa el numerador del denominador."
     ];
 
     return Scaffold(
@@ -174,7 +178,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
                         ],
                       ),
                       separadorVertical(context, 1),
-                      TemaWidget('tema2.png', 'Tema 2: Simplificar fracciones'),
+                      TemaWidget('tema1.png', 'Tema 1: Concepto de fracción'),
                       separadorVertical(context, 2),
                       texto("Preguntas de selección", fontBold, 20, rojoColor,
                           TextAlign.center),
@@ -191,7 +195,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
                             children: [
                               Pregunta(
                                 pregunta:
-                                    "¿Qué significa simplificar una fracción?",
+                                    "¿Qué representa el numerador en una fracción?",
                                 respuestas: respuestas1,
                                 colorActivo: rojoColor,
                                 onRespuestaSeleccionada: (int index) {
@@ -210,7 +214,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
                               ),
                               separadorVertical(context, 3),
                               Pregunta(
-                                pregunta: "¿Cuál es el MCD de 8 y 12?",
+                                pregunta: "¿Cómo se lee la fracción 5/6?",
                                 respuestas: respuestas2,
                                 colorActivo: rojoColor,
                                 onRespuestaSeleccionada: (int index) {
@@ -229,7 +233,8 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
                               ),
                               separadorVertical(context, 3),
                               Pregunta(
-                                pregunta: "¿Cuál es la simplificación de 6/9?",
+                                pregunta:
+                                    "Si divides una pizza en 8 partes iguales y tomas 3 partes, ¿qué fracción de la pizza has tomado?",
                                 respuestas: respuestas3,
                                 colorActivo: rojoColor,
                                 onRespuestaSeleccionada: (int index) {
@@ -249,7 +254,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
                               separadorVertical(context, 3),
                               Pregunta(
                                 pregunta:
-                                    "¿Cuál de las siguientes fracciones está correctamente simplificada?",
+                                    "¿Qué representa el denominador en una fracción?",
                                 respuestas: respuestas4,
                                 colorActivo: rojoColor,
                                 onRespuestaSeleccionada: (int index) {

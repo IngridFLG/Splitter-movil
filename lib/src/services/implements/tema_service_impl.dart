@@ -20,10 +20,9 @@ class TemaServiceImpl with TemaService {
     );
 
     if (response.statusCode == 200) {
-      final dynamic decodedData = json.decode(response.body);
-      final List<dynamic> temasJson = decodedData["msg"];
+      final List<dynamic> decodedData = json.decode(response.body);
       final List<TemaModel> temas =
-          temasJson.map((jsonItem) => TemaModel.fromJson(jsonItem)).toList();
+          decodedData.map((jsonItem) => TemaModel.fromJson(jsonItem)).toList();
       return temas;
     } else {
       return [];

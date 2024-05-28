@@ -4,6 +4,8 @@ export 'package:splitter_movil_frontend/src/pages/temas/tema_inicio.dart';
 
 // Concepto
 export 'package:splitter_movil_frontend/src/pages/temas/fraccion/concepto_page.dart';
+export 'package:splitter_movil_frontend/src/pages/temas/fraccion/ejemplos_concepto_page.dart';
+export 'package:splitter_movil_frontend/src/pages/temas/fraccion/ejercicio_concepto_page.dart';
 
 // Simplificar
 export 'package:splitter_movil_frontend/src/pages/temas/simplificar/simplificar_page.dart';

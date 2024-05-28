@@ -178,7 +178,7 @@ class _EjemploConceptoPageState extends State<EjemploConceptoPage> {
                                       hoverColor: rojoColor,
                                       duration: 1000,
                                       onTap: () => navigator.push(
-                                          page: "ejercicio-simplificar-page"),
+                                          page: "ejercicio-concepto-page"),
                                     ),
                                   ),
                                   separadorVertical(context, 3),
