@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splitter_movil_frontend/src/pages/pages.dart';
-
+import 'package:splitter_movil_frontend/src/pages/temas/fraccion/ejemplos_concepto_page.dart';
 
 final Map<String, Widget> _pages = {
   //inicio
@@ -8,6 +8,7 @@ final Map<String, Widget> _pages = {
 
   // Concepto de fracción
   ConceptoPage.name: const ConceptoPage(),
+  EjemploConceptoPage.name: const EjemploConceptoPage(),
 
   // Simplificar fracciones
   SimplificarPage.name: const SimplificarPage(),
