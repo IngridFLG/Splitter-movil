@@ -97,6 +97,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
     if (response.type! == "success") {
       // ignore: use_build_context_synchronously
       showDialog(
+        barrierDismissible: false,
         // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertaVolver(
@@ -104,8 +105,10 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
           height: 150,
           function: () {
             Navigator.of(context).pop();
+            final navigator = Provider.of<NavigatorProvider>(context, listen: false);
+            navigator.push(page: "tema-inicio-page");
           },
-          widthButton: 10,
+          widthButton: 30,
           textoBoton: 'Volver',
           image: Image.asset(imagen, height: 80),
           mensaje: mensaje,
@@ -123,7 +126,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
           function: () {
             Navigator.of(context).pop();
           },
-          widthButton: 10,
+          widthButton: 30,
           textoBoton: 'Volver',
           image: Image.asset('assets/images/warning.jpg', height: 80),
           mensaje: response.msg,
@@ -135,7 +138,6 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
 
   @override
   Widget build(BuildContext context) {
-    final navigator = Provider.of<NavigatorProvider>(context, listen: false);
 
     List<String> respuestas1 = [
       "A) Multiplicar el numerador y el denominador por el mismo número.",

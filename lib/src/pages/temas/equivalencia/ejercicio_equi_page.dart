@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
+import 'package:splitter_movil_frontend/src/models/resultado_model.dart';
 import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
+import 'package:splitter_movil_frontend/src/providers/services_provider.dart';
+import 'package:splitter_movil_frontend/src/providers/usuario_provider.dart';
 import 'package:splitter_movil_frontend/src/widgets/widgets.dart';
 
 class EjercicioEquivalenciaPage extends StatefulWidget {
@@ -40,9 +43,101 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
     });
   }
 
+  void _validarRespuestas() async {
+    List<int> respuestasCorrectas = [3, 0, 0, 3];
+    double puntaje = 0;
+
+    if (_selectedRespuesta1 == respuestasCorrectas[0]) {
+      puntaje += 25;
+    }
+    if (_selectedRespuesta2 == respuestasCorrectas[1]) {
+      puntaje += 25;
+    }
+    if (_selectedRespuesta3 == respuestasCorrectas[2]) {
+      puntaje += 25;
+    }
+    if (_selectedRespuesta4 == respuestasCorrectas[3]) {
+      puntaje += 25;
+    }
+
+    String mensaje;
+    String imagen;
+
+    if (puntaje <= 100 && puntaje > 75) {
+      mensaje = "¡Todas las respuestas son correctas! Puntaje: $puntaje";
+      imagen = 'assets/imagenes/estrella4.png';
+    } else if (puntaje <= 75 && puntaje > 50) {
+      mensaje =
+          "Muy bien, casi todas las respuestas son correctas. Puntaje: $puntaje";
+      imagen = 'assets/imagenes/estrella3.png';
+    } else if (puntaje <= 50 && puntaje > 25) {
+      mensaje =
+          "Bien hecho, la mayoría de las respuestas son correctas. Puntaje: $puntaje";
+      imagen = 'assets/imagenes/estrella2.png';
+    } else {
+      mensaje = "Puntaje bajo. Inténtalo de nuevo. Puntaje: $puntaje";
+      imagen = 'assets/imagenes/estrella2.png';
+    }
+
+    final usuarioProvider =
+        // ignore: use_build_context_synchronously
+        Provider.of<UsuarioProvider>(context, listen: false);
+
+    String token = usuarioProvider.token!;
+    int usuarioId = usuarioProvider.usuario!.id;
+    int temaId = usuarioProvider.buscarTemaPorNombre("Simplificar fracciones")!;
+    ResultadoformModel resultado = ResultadoformModel(
+        puntaje: puntaje, idTema: temaId, idUsuario: usuarioId);
+
+    final servicePorvider =
+        Provider.of<ServicesProvider>(context, listen: false);
+    final response = await servicePorvider.resultadoService
+        .registrarResultado(token, resultado);
+
+    if (response.type! == "success") {
+      // ignore: use_build_context_synchronously
+      showDialog(
+        barrierDismissible: false,
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertaVolver(
+          width: 200,
+          height: 150,
+          function: () {
+            Navigator.of(context).pop();
+            final navigator = Provider.of<NavigatorProvider>(context, listen: false);
+            navigator.push(page: "tema-inicio-page");
+          },
+          widthButton: 30,
+          textoBoton: 'Volver',
+          image: Image.asset(imagen, height: 80),
+          mensaje: mensaje,
+          dobleBoton: false,
+        ),
+      );
+    } else {
+      // ignore: use_build_context_synchronously
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertaVolver(
+          width: 200,
+          height: 150,
+          function: () {
+            Navigator.of(context).pop();
+          },
+          widthButton: 30,
+          textoBoton: 'Volver',
+          image: Image.asset('assets/images/warning.jpg', height: 80),
+          mensaje: response.msg,
+          dobleBoton: false,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final navigator = Provider.of<NavigatorProvider>(context, listen: false);
 
     List<String> respuestas1 = ["A) 3/5", "B) 4/6", "C) 5/7", "D) 6/9"];
 
@@ -200,6 +295,7 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
                               );
                               return;
                             }
+                            _validarRespuestas();
                           },
                         ),
                         separadorVertical(context, 3),

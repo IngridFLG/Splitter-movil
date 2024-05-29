@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
 import 'package:splitter_movil_frontend/src/models/resultado_model.dart';
+import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
 import 'package:splitter_movil_frontend/src/providers/services_provider.dart';
 import 'package:splitter_movil_frontend/src/providers/usuario_provider.dart';
 import 'package:splitter_movil_frontend/src/widgets/widgets.dart';
@@ -95,6 +96,7 @@ class _EjercicioSumaRestaPageState extends State<EjercicioSumaRestaPage> {
     if (response.type! == "success") {
       // ignore: use_build_context_synchronously
       showDialog(
+        barrierDismissible: false,
         // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertaVolver(
@@ -102,6 +104,8 @@ class _EjercicioSumaRestaPageState extends State<EjercicioSumaRestaPage> {
           height: 210,
           function: () {
             Navigator.of(context).pop();
+            final navigator = Provider.of<NavigatorProvider>(context, listen: false);
+            navigator.push(page: "tema-inicio-page");
           },
           widthButton: 30,
           textoBoton: 'Volver',
@@ -121,7 +125,7 @@ class _EjercicioSumaRestaPageState extends State<EjercicioSumaRestaPage> {
           function: () {
             Navigator.of(context).pop();
           },
-          widthButton: 10,
+          widthButton: 30,
           textoBoton: 'Volver',
           image: Image.asset('assets/images/warning.jpg', height: 80),
           mensaje: response.msg,
