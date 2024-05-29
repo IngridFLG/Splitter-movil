@@ -102,7 +102,7 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
         context: context,
         builder: (context) => AlertaVolver(
           width: 200,
-          height: 150,
+          height: 210,
           function: () {
             Navigator.of(context).pop();
             final navigator = Provider.of<NavigatorProvider>(context, listen: false);
