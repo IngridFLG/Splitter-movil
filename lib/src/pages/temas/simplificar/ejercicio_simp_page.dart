@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
@@ -17,10 +19,73 @@ class EjercicioSimplificarPage extends StatefulWidget {
 }
 
 class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
-  int? _selectedRespuesta1;
-  int? _selectedRespuesta2;
-  int? _selectedRespuesta3;
-  int? _selectedRespuesta4;
+  List<int?> _selectedRespuestas = List<int?>.filled(4, null);
+  List<Map<String, dynamic>> _preguntasSeleccionadas = [];
+
+  final List<Map<String, dynamic>> _todasLasPreguntas = [
+    {
+      "pregunta": "¿Qué significa simplificar una fracción?",
+      "respuestas": [
+        "A) Multiplicar el numerador y el denominador por el mismo número.",
+        "B) Dividir el numerador y el denominador por su máximo común divisor (MCD).",
+        "C) Sumar el numerador y el denominador.",
+        "D) Restar el denominador del numerador."
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cuál es el MCD de 8 y 12?",
+      "respuestas": ["A) 2", "B) 6", "C) 4", "D) 8"],
+      "correcta": 2
+    },
+    {
+      "pregunta": "¿Cuál es la simplificación de 6/9?",
+      "respuestas": ["A) 2/3", "B) 3/6", "C) 1/2", "D) 3/4"],
+      "correcta": 0
+    },
+    {
+      "pregunta":
+          "¿Cuál de las siguientes fracciones está correctamente simplificada?",
+      "respuestas": [
+        "A) 10/20 = 1/2",
+        "B) 15/25 = 5/10",
+        "C) 18/24 = 3/4",
+        "D) 8/12 = 4/5"
+      ],
+      "correcta": 0
+    },
+    {
+      "pregunta": "¿Cuál es la fracción irreducible de 12/15?",
+      "respuestas": ["A) 5/6", "B) 3/4", "C) 4/5", "D) 2/3"],
+      "correcta": 3
+    },
+    {
+      "pregunta": "Si simplificas la fracción 16/24, ¿cuál es el resultado?",
+      "respuestas": ["A) 4/3", "B) 3/4", "C) 2/3", "D) 5/6"],
+      "correcta": 2
+    },
+    {
+      "pregunta": "¿Cuál es la fracción irreducible de 20/25?",
+      "respuestas": ["A) 5/6", "B) 4/5", "C) 16/20", "D) 2/3"],
+      "correcta": 1
+    },
+    {
+      "pregunta":
+          "¿Qué fracción es equivalente a 9/12 y está en su forma más simple?",
+      "respuestas": ["A) 2/3", "B) 3/4", "C) 4/5", "D) 5/6"],
+      "correcta": 0
+    },
+    {
+      "pregunta": "¿Cuál es la fracción irreducible de 18/27?",
+      "respuestas": ["A) 4/5", "B) 3/4", "C) 6/9", "D) 2/3"],
+      "correcta": 3
+    },
+    {
+      "pregunta": "¿Cuál es la simplificación de 15/20?",
+      "respuestas": ["A) 5/6", "B) 4/5", "C) 3/4", "D) 6/7"],
+      "correcta": 2
+    },
+  ];
 
   @override
   void initState() {
@@ -30,34 +95,37 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
 
   void loadData() {
     setState(() {
-      _selectedRespuesta1 = -1;
-      _selectedRespuesta2 = -1;
-      _selectedRespuesta3 = -1;
-      _selectedRespuesta4 = -1;
+      _selectedRespuestas = List<int?>.filled(4, -1);
+      _preguntasSeleccionadas = _seleccionarPreguntasAlAzar(4);
     });
   }
 
-  void _handleRespuesta(int index, Function(int) updateSelected) {
+  List<Map<String, dynamic>> _seleccionarPreguntasAlAzar(int cantidad) {
+    final random = Random();
+    final indicesSeleccionados = <int>{};
+
+    while (indicesSeleccionados.length < cantidad) {
+      indicesSeleccionados.add(random.nextInt(_todasLasPreguntas.length));
+    }
+
+    return indicesSeleccionados
+        .map((index) => _todasLasPreguntas[index])
+        .toList();
+  }
+
+  void _handleRespuesta(int preguntaIndex, int respuestaIndex) {
     setState(() {
-      updateSelected(index);
+      _selectedRespuestas[preguntaIndex] = respuestaIndex;
     });
   }
 
   void _validarRespuestas() async {
-    List<int> respuestasCorrectas = [1, 1, 0, 0];
     double puntaje = 0;
 
-    if (_selectedRespuesta1 == respuestasCorrectas[0]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta2 == respuestasCorrectas[1]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta3 == respuestasCorrectas[2]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta4 == respuestasCorrectas[3]) {
-      puntaje += 25;
+    for (int i = 0; i < _preguntasSeleccionadas.length; i++) {
+      if (_selectedRespuestas[i] == _preguntasSeleccionadas[i]['correcta']) {
+        puntaje += 25;
+      }
     }
 
     String mensaje;
@@ -105,7 +173,8 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
           height: 210,
           function: () {
             Navigator.of(context).pop();
-            final navigator = Provider.of<NavigatorProvider>(context, listen: false);
+            final navigator =
+                Provider.of<NavigatorProvider>(context, listen: false);
             navigator.push(page: "tema-inicio-page");
           },
           widthButton: 30,
@@ -138,25 +207,6 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<String> respuestas1 = [
-      "A) Multiplicar el numerador y el denominador por el mismo número.",
-      "B) Dividir el numerador y el denominador por su máximo común divisor (MCD).",
-      "C) Sumar el numerador y el denominador.",
-      "D) Restar el denominador del numerador."
-    ];
-
-    List<String> respuestas2 = ["A) 2", "B) 6", "C) 4", "D) 8"];
-
-    List<String> respuestas3 = ["A) 2/3", "B) 3/6", "C) 1/2", "D) 3/4"];
-
-    List<String> respuestas4 = [
-      "A) 10/20 = 1/2",
-      "B) 15/25 = 5/10",
-      "C) 18/24 = 3/4",
-      "D) 8/12 = 4/5"
-    ];
-
     return Scaffold(
         body: SizedBox(
             child: Padding(
@@ -191,84 +241,33 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              Pregunta(
-                                pregunta:
-                                    "¿Qué significa simplificar una fracción?",
-                                respuestas: respuestas1,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta1 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
-                              Pregunta(
-                                pregunta: "¿Cuál es el MCD de 8 y 12?",
-                                respuestas: respuestas2,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta2 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
-                              Pregunta(
-                                pregunta: "¿Cuál es la simplificación de 6/9?",
-                                respuestas: respuestas3,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta3 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
-                              Pregunta(
-                                pregunta:
-                                    "¿Cuál de las siguientes fracciones está correctamente simplificada?",
-                                respuestas: respuestas4,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta4 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
+                              Column(
+                                  children: List.generate(
+                                      _preguntasSeleccionadas.length, (index) {
+                                final pregunta = _preguntasSeleccionadas[index];
+                                return Column(children: [
+                                  Pregunta(
+                                    pregunta: pregunta['pregunta'],
+                                    respuestas: List<String>.from(
+                                        pregunta['respuestas']),
+                                    colorActivo: rojoColor,
+                                    onRespuestaSeleccionada:
+                                        (int respuestaIndex) {
+                                      _handleRespuesta(index, respuestaIndex);
+                                    },
+                                  ),
+                                  separadorVertical(context, 3),
+                                  Divider(
+                                    color: rojoColor, // Color de la línea
+                                    thickness: 1, // Grosor de la línea
+                                    indent:
+                                        2, // Espaciado desde el borde izquierdo
+                                    endIndent:
+                                        2, // Espaciado desde el borde derecho
+                                  ),
+                                  separadorVertical(context, 3),
+                                ]);
+                              })),
                               BotonAgregar(
                                 textButton: "Enviar",
                                 widthButton: 260,
@@ -278,10 +277,7 @@ class _EjercicioSimplificarPageState extends State<EjercicioSimplificarPage> {
                                 hoverColor: rojoColor,
                                 duration: 1000,
                                 onTap: () async {
-                                  if (_selectedRespuesta1 == -1 ||
-                                      _selectedRespuesta2 == -1 ||
-                                      _selectedRespuesta3 == -1 ||
-                                      _selectedRespuesta4 == -1) {
+                                  if (_selectedRespuestas.contains(-1)) {
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertaVolver(

@@ -1,7 +1,7 @@
 export 'package:splitter_movil_frontend/src/pages/home_page.dart';
 export 'package:splitter_movil_frontend/src/pages/inicio/login_page.dart';
 export 'package:splitter_movil_frontend/src/pages/temas/tema_inicio.dart';
-
+export 'package:splitter_movil_frontend/src/pages/resultados/resultados_page.dart';
 // Concepto
 export 'package:splitter_movil_frontend/src/pages/temas/fraccion/concepto_page.dart';
 export 'package:splitter_movil_frontend/src/pages/temas/fraccion/ejemplos_concepto_page.dart';

@@ -6,6 +6,7 @@ import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
 import 'package:splitter_movil_frontend/src/providers/services_provider.dart';
 import 'package:splitter_movil_frontend/src/providers/usuario_provider.dart';
 import 'package:splitter_movil_frontend/src/widgets/widgets.dart';
+import 'dart:math';
 
 class EjercicioEquivalenciaPage extends StatefulWidget {
   static const name = "ejercicio-equivalencia-page";
@@ -17,10 +18,65 @@ class EjercicioEquivalenciaPage extends StatefulWidget {
 }
 
 class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
-  int? _selectedRespuesta1;
-  int? _selectedRespuesta2;
-  int? _selectedRespuesta3;
-  int? _selectedRespuesta4;
+  List<int?> _selectedRespuestas = List<int?>.filled(4, null);
+  List<Map<String, dynamic>> _preguntasSeleccionadas = [];
+
+  final List<Map<String, dynamic>> _todasLasPreguntas = [
+    {
+      "pregunta": "¿Cuál de las siguientes fracciones es equivalente a 2/3?",
+      "respuestas": ["A) 3/5", "B) 4/6", "C) 5/7", "D) 6/9"],
+      "correcta": 3
+    },
+    {
+      "pregunta": "¿Son equivalentes las fracciones 4/9 y 8/18?",
+      "respuestas": ["A) Sí", "B) No"],
+      "correcta": 0
+    },
+    {
+      "pregunta": "¿Qué fracción equivalente a 1/2 tiene un denominador de 16?",
+      "respuestas": ["A) 7/16", "B) 8/16", "C) 6/16", "D) 5/16"],
+      "correcta": 1
+    },
+    {
+      "pregunta":
+          "¿Cuál es la fracción equivalente a 4/5 con un denominador de 25?",
+      "respuestas": ["A) 8/25", "B) 10/25", "C) 16/25", "D) 20/25"],
+      "correcta": 3
+    },
+    {
+      "pregunta":
+          "¿Cuál es la fracción equivalente a 3/4 con un denominador de 8?",
+      "respuestas": ["A) 4/8", "B) 5/8", "C) 6/8", "D) 3/8"],
+      "correcta": 2
+    },
+    {
+      "pregunta": "¿Son equivalentes las fracciones 5/10 y 1/2?",
+      "respuestas": ["A) No", "B) Sí"],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Qué fracción equivalente a 2/3 tiene un numerador de 8?",
+      "respuestas": ["A) 8/12", "B) 8/9", "C) 8/10", "D) 8/15"],
+      "correcta": 3
+    },
+    {
+      "pregunta":
+          "¿Cuál es la fracción equivalente a 7/8 con un denominador de 16?",
+      "respuestas": ["A) 12/16", "B) 14/16", "C) 10/16", "D) 9/16"],
+      "correcta": 1
+    },
+    {
+      "pregunta":
+          "¿Cuál es la fracción equivalente a 5/6 con un numerador de 10?",
+      "respuestas": ["A) 10/12", "B) 10/11", "C) 10/13", "D) 10/14"],
+      "correcta": 0
+    },
+    {
+      "pregunta": "¿Cuál de las siguientes fracciones es equivalente a 7/9?",
+      "respuestas": ["A) 14/20", "B) 14/19", "C) 14/18", "D) 14/21"],
+      "correcta": 2
+    }
+  ];
 
   @override
   void initState() {
@@ -30,34 +86,37 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
 
   void loadData() {
     setState(() {
-      _selectedRespuesta1 = -1;
-      _selectedRespuesta2 = -1;
-      _selectedRespuesta3 = -1;
-      _selectedRespuesta4 = -1;
+      _selectedRespuestas = List<int?>.filled(4, -1);
+      _preguntasSeleccionadas = _seleccionarPreguntasAlAzar(4);
     });
   }
 
-  void _handleRespuesta(int index, Function(int) updateSelected) {
+  List<Map<String, dynamic>> _seleccionarPreguntasAlAzar(int cantidad) {
+    final random = Random();
+    final indicesSeleccionados = <int>{};
+
+    while (indicesSeleccionados.length < cantidad) {
+      indicesSeleccionados.add(random.nextInt(_todasLasPreguntas.length));
+    }
+
+    return indicesSeleccionados
+        .map((index) => _todasLasPreguntas[index])
+        .toList();
+  }
+
+  void _handleRespuesta(int preguntaIndex, int respuestaIndex) {
     setState(() {
-      updateSelected(index);
+      _selectedRespuestas[preguntaIndex] = respuestaIndex;
     });
   }
 
   void _validarRespuestas() async {
-    List<int> respuestasCorrectas = [3, 0, 0, 3];
     double puntaje = 0;
 
-    if (_selectedRespuesta1 == respuestasCorrectas[0]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta2 == respuestasCorrectas[1]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta3 == respuestasCorrectas[2]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta4 == respuestasCorrectas[3]) {
-      puntaje += 25;
+    for (int i = 0; i < _preguntasSeleccionadas.length; i++) {
+      if (_selectedRespuestas[i] == _preguntasSeleccionadas[i]['correcta']) {
+        puntaje += 25;
+      }
     }
 
     String mensaje;
@@ -105,7 +164,8 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
           height: 210,
           function: () {
             Navigator.of(context).pop();
-            final navigator = Provider.of<NavigatorProvider>(context, listen: false);
+            final navigator =
+                Provider.of<NavigatorProvider>(context, listen: false);
             navigator.push(page: "tema-inicio-page");
           },
           widthButton: 30,
@@ -138,20 +198,6 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<String> respuestas1 = ["A) 3/5", "B) 4/6", "C) 5/7", "D) 6/9"];
-
-    List<String> respuestas2 = ["A) Sí", "B) No"];
-
-    List<String> respuestas3 = ["A) 8/16", "B) 7/16", "C) 6/16", "D) 5/16"];
-
-    List<String> respuestas4 = [
-      "A) 8/25",
-      "B) 10/25",
-      "C) 16/25",
-      "D) 20/25"
-    ];
-
     return Scaffold(
         body: SizedBox(
             child: Padding(
@@ -184,122 +230,74 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
                       ),
                       separadorVertical(context, 3),
                       Expanded(
-                          child: SingleChildScrollView(
-                              child: Column(children: [
-                        Pregunta(
-                          pregunta:
-                              "¿Cuál de las siguientes fracciones es equivalente a 2/3?",
-                          respuestas: respuestas1,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta1 = newValue;
-                            });
-                          },
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Column(
+                                  children: List.generate(
+                                      _preguntasSeleccionadas.length, (index) {
+                                final pregunta = _preguntasSeleccionadas[index];
+                                return Column(children: [
+                                  Pregunta(
+                                    pregunta: pregunta['pregunta'],
+                                    respuestas: List<String>.from(
+                                        pregunta['respuestas']),
+                                    colorActivo: rojoColor,
+                                    onRespuestaSeleccionada:
+                                        (int respuestaIndex) {
+                                      _handleRespuesta(index, respuestaIndex);
+                                    },
+                                  ),
+                                  separadorVertical(context, 3),
+                                  Divider(
+                                    color: rojoColor, // Color de la línea
+                                    thickness: 1, // Grosor de la línea
+                                    indent:
+                                        2, // Espaciado desde el borde izquierdo
+                                    endIndent:
+                                        2, // Espaciado desde el borde derecho
+                                  ),
+                                  separadorVertical(context, 3),
+                                ]);
+                              })),
+                              BotonAgregar(
+                                textButton: "Enviar",
+                                widthButton: 260,
+                                heightButton: 50,
+                                size: bigSize,
+                                color: rojoColor,
+                                hoverColor: rojoColor,
+                                duration: 1000,
+                                onTap: () async {
+                                  if (_selectedRespuestas.contains(-1)) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertaVolver(
+                                        width: 250,
+                                        height: 200,
+                                        function: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        widthButton: 30,
+                                        textoBoton: 'Volver',
+                                        image: Image.asset(
+                                            'assets/imagenes/warning.jpg',
+                                            height: 80),
+                                        mensaje:
+                                            "Debes responder todas las preguntas",
+                                        dobleBoton: false,
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  _validarRespuestas();
+                                },
+                              ),
+                              separadorVertical(context, 3),
+                            ],
+                          ),
                         ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
-                        Pregunta(
-                          pregunta:
-                              "¿Son equivalentes las fracciones 4/9 y 8/18?",
-                          respuestas: respuestas2,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta2 = newValue;
-                            });
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
-                        Pregunta(
-                          pregunta:
-                              "¿Qué fracción equivalente a 1/2 tiene un denominador de 16?",
-                          respuestas: respuestas3,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta3 = newValue;
-                            });
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
-                        Pregunta(
-                          pregunta:
-                              "¿Cuál es la fracción equivalente a 4/5 con un denominador de 25?",
-                          respuestas: respuestas4,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta4 = newValue;
-                            });
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
-                        BotonAgregar(
-                          textButton: "Enviar",
-                          widthButton: 260,
-                          heightButton: 50,
-                          size: bigSize,
-                          color: rojoColor,
-                          hoverColor: rojoColor,
-                          duration: 1000,
-                          onTap: () async {
-                            if (_selectedRespuesta1 == -1 ||
-                                _selectedRespuesta2 == -1 ||
-                                _selectedRespuesta3 == -1 ||
-                                _selectedRespuesta4 == -1) {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertaVolver(
-                                  width: 250,
-                                  height: 200,
-                                  function: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  widthButton: 30,
-                                  textoBoton: 'Volver',
-                                  image: Image.asset(
-                                      'assets/imagenes/warning.jpg',
-                                      height: 80),
-                                  mensaje:
-                                      "Debes responder todas las preguntas",
-                                  dobleBoton: false,
-                                ),
-                              );
-                              return;
-                            }
-                            _validarRespuestas();
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                      ])))
+                      )
                     ]))));
   }
 }

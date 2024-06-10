@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
@@ -17,10 +19,34 @@ class EjercicioMultiDividirPage extends StatefulWidget {
 }
 
 class _EjercicioMultiDividirPageState extends State<EjercicioMultiDividirPage> {
-  int? _selectedRespuesta1;
-  int? _selectedRespuesta2;
-  int? _selectedRespuesta3;
-  int? _selectedRespuesta4;
+  List<int?> _selectedRespuestas = List<int?>.filled(4, null);
+  List<Map<String, dynamic>> _preguntasSeleccionadas = [];
+
+  final List<Map<String, dynamic>> _todasLasPreguntas = [
+    {
+      "pregunta":
+          "¿Cuál es el resultado de multiplicar las siguientes fracciones, 2/7 y 3/7?",
+      "respuestas": ["A) 6/49", "B) 5/49", "C) 4/49", "D) 9/49"],
+      "correcta": 0
+    },
+    {
+      "pregunta":
+          "Selecciona el resultado de dividir la fracción 5/9 entre 2/9.",
+      "respuestas": ["A) 5/2", "B) 9/2", "C) 5/4", "D) 9/4"],
+      "correcta": 0
+    },
+    {
+      "pregunta": "¿Qué fracción resulta de multiplicar 1/4 por 2/5?",
+      "respuestas": ["A) 2/20", "B) 3/20", "C) 1/10", "D) 2/10"],
+      "correcta": 2
+    },
+    {
+      "pregunta":
+          "Resuelve la siguiente operación, y selecciona su respuesta\n(2/3 * 4/5) ÷ 1/2",
+      "respuestas": ["A) 8/30", "B) 8/15", "C) 4/15", "D) 16/15"],
+      "correcta": 3
+    },
+  ];
 
   @override
   void initState() {
@@ -30,34 +56,37 @@ class _EjercicioMultiDividirPageState extends State<EjercicioMultiDividirPage> {
 
   void loadData() {
     setState(() {
-      _selectedRespuesta1 = -1;
-      _selectedRespuesta2 = -1;
-      _selectedRespuesta3 = -1;
-      _selectedRespuesta4 = -1;
+      _selectedRespuestas = List<int?>.filled(4, -1);
+      _preguntasSeleccionadas = _seleccionarPreguntasAlAzar(4);
     });
   }
 
-  void _handleRespuesta(int index, Function(int) updateSelected) {
+  List<Map<String, dynamic>> _seleccionarPreguntasAlAzar(int cantidad) {
+    final random = Random();
+    final indicesSeleccionados = <int>{};
+
+    while (indicesSeleccionados.length < cantidad) {
+      indicesSeleccionados.add(random.nextInt(_todasLasPreguntas.length));
+    }
+
+    return indicesSeleccionados
+        .map((index) => _todasLasPreguntas[index])
+        .toList();
+  }
+
+  void _handleRespuesta(int preguntaIndex, int respuestaIndex) {
     setState(() {
-      updateSelected(index);
+      _selectedRespuestas[preguntaIndex] = respuestaIndex;
     });
   }
 
   void _validarRespuestas() async {
-    List<int> respuestasCorrectas = [0, 0, 2, 3];
     double puntaje = 0;
 
-    if (_selectedRespuesta1 == respuestasCorrectas[0]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta2 == respuestasCorrectas[1]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta3 == respuestasCorrectas[2]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta4 == respuestasCorrectas[3]) {
-      puntaje += 25;
+    for (int i = 0; i < _preguntasSeleccionadas.length; i++) {
+      if (_selectedRespuestas[i] == _preguntasSeleccionadas[i]['correcta']) {
+        puntaje += 25;
+      }
     }
 
     String mensaje;
@@ -85,7 +114,8 @@ class _EjercicioMultiDividirPageState extends State<EjercicioMultiDividirPage> {
 
     String token = usuarioProvider.token!;
     int usuarioId = usuarioProvider.usuario!.id;
-    int temaId = usuarioProvider.buscarTemaPorNombre("Multiplicar y dividir fracciones")!;
+    int temaId = usuarioProvider
+        .buscarTemaPorNombre("Multiplicar y dividir fracciones")!;
     ResultadoformModel resultado = ResultadoformModel(
         puntaje: puntaje, idTema: temaId, idUsuario: usuarioId);
 
@@ -105,7 +135,8 @@ class _EjercicioMultiDividirPageState extends State<EjercicioMultiDividirPage> {
           height: 210,
           function: () {
             Navigator.of(context).pop();
-            final navigator = Provider.of<NavigatorProvider>(context, listen: false);
+            final navigator =
+                Provider.of<NavigatorProvider>(context, listen: false);
             navigator.push(page: "tema-inicio-page");
           },
           widthButton: 30,
@@ -138,16 +169,6 @@ class _EjercicioMultiDividirPageState extends State<EjercicioMultiDividirPage> {
 
   @override
   Widget build(BuildContext context) {
-    //final navigator = Provider.of<NavigatorProvider>(context, listen: false);
-
-    List<String> respuestas1 = ["A) 6/49", "B) 5/49", "C) 4/49", "D) 9/49"]; //A
-
-    List<String> respuestas2 = ["A) 5/2", "B) 9/2", "C) 5/4", "D) 9/4"]; //A
-
-    List<String> respuestas3 = ["A) 2/20", "B) 3/20", "C) 1/10", "D) 2/10"];// C
-
-    List<String> respuestas4 = ["A) 8/30", "B) 8/15", "C) 4/15", "D) 16/15"]; // D
-
     return Scaffold(
         body: SizedBox(
             child: Padding(
@@ -182,82 +203,30 @@ class _EjercicioMultiDividirPageState extends State<EjercicioMultiDividirPage> {
                       Expanded(
                           child: SingleChildScrollView(
                               child: Column(children: [
-                        Pregunta(
-                          pregunta:
-                              "¿Cuál es el resultado de multiplicar las siguientes fracciones, 2/7 y 3/7?",
-                          respuestas: respuestas1,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta1 = newValue;
-                            });
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
-                        Pregunta(
-                          pregunta:
-                              "Selecciona el resultado de dividir la fracción 5/9 entre 2/9.",
-                          respuestas: respuestas2,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta2 = newValue;
-                            });
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
-                        Pregunta(
-                          pregunta:
-                              "¿Qué fracción resulta de multiplicar 1/4 por 2/5?",
-                          respuestas: respuestas3,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta3 = newValue;
-                            });
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
-                        Pregunta(
-                          pregunta:
-                              "Resuelve la siguiente operación, y selecciona su respuesta\n(2/3 * 4/5) ÷ 1/2",
-                          respuestas: respuestas4,
-                          colorActivo: rojoColor,
-                          onRespuestaSeleccionada: (int index) {
-                            _handleRespuesta(index, (newValue) {
-                              _selectedRespuesta4 = newValue;
-                            });
-                          },
-                        ),
-                        separadorVertical(context, 3),
-                        Divider(
-                          color: rojoColor, // Color de la línea
-                          thickness: 1, // Grosor de la línea
-                          indent: 2, // Espaciado desde el borde izquierdo
-                          endIndent: 2, // Espaciado desde el borde derecho
-                        ),
-                        separadorVertical(context, 3),
+                        Column(
+                            children: List.generate(
+                                _preguntasSeleccionadas.length, (index) {
+                          final pregunta = _preguntasSeleccionadas[index];
+                          return Column(children: [
+                            Pregunta(
+                              pregunta: pregunta['pregunta'],
+                              respuestas:
+                                  List<String>.from(pregunta['respuestas']),
+                              colorActivo: rojoColor,
+                              onRespuestaSeleccionada: (int respuestaIndex) {
+                                _handleRespuesta(index, respuestaIndex);
+                              },
+                            ),
+                            separadorVertical(context, 3),
+                            Divider(
+                              color: rojoColor, // Color de la línea
+                              thickness: 1, // Grosor de la línea
+                              indent: 2, // Espaciado desde el borde izquierdo
+                              endIndent: 2, // Espaciado desde el borde derecho
+                            ),
+                            separadorVertical(context, 3),
+                          ]);
+                        })),
                         BotonAgregar(
                           textButton: "Enviar",
                           widthButton: 260,
@@ -267,10 +236,7 @@ class _EjercicioMultiDividirPageState extends State<EjercicioMultiDividirPage> {
                           hoverColor: rojoColor,
                           duration: 1000,
                           onTap: () async {
-                            if (_selectedRespuesta1 == -1 ||
-                                _selectedRespuesta2 == -1 ||
-                                _selectedRespuesta3 == -1 ||
-                                _selectedRespuesta4 == -1) {
+                            if (_selectedRespuestas.contains(-1)) {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertaVolver(

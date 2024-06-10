@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(2),
                 child: SvgPicture.asset(
                   'assets/iconos/Sign_in_squre.svg',
-                  color: provider.tab.index == 3 ? blancoColor : grisClaroColor,
+                  color: provider.tab.index == 2 ? blancoColor : grisClaroColor,
                   height: size.width * 0.07,
                 ),
               ),

@@ -27,10 +27,13 @@ final Map<String, Widget> _pages = {
   // Multiplicar y dividir fracciones
   MultiplicarPage.name: const MultiplicarPage(),
   EjercicioMultiDividirPage.name: const EjercicioMultiDividirPage(),
+
+  // Resultados
+  ResultadosPage.name: const ResultadosPage(),
 };
 
 final Map<int, String> _index = {
-  0: TemaInicio.name,
+  0: ResultadosPage.name,
   1: TemaInicio.name,
   2: TemaInicio.name,
 };

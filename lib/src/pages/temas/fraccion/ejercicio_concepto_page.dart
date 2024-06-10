@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
@@ -16,10 +18,86 @@ class EjercicioConceptoPage extends StatefulWidget {
 }
 
 class _EjercicioConceptoPageState extends State<EjercicioConceptoPage> {
-  int? _selectedRespuesta1;
-  int? _selectedRespuesta2;
-  int? _selectedRespuesta3;
-  int? _selectedRespuesta4;
+  List<int?> _selectedRespuestas = List<int?>.filled(4, null);
+  List<Map<String, dynamic>> _preguntasSeleccionadas = [];
+
+  final List<Map<String, dynamic>> _todasLasPreguntas = [
+    {
+      "pregunta": "¿Qué representa el numerador en una fracción?",
+      "respuestas": [
+        "A) La cantidad total de partes en que se divide el todo.",
+        "B) La cantidad de partes que se toman del total.",
+        "C) El tipo de fracción.",
+        "D) La línea que separa el numerador del denominador."
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cómo se lee la fracción 5/6?",
+      "respuestas": [
+        "A) Cinco de seis.",
+        "B) Seis de cinco.",
+        "C) Cinco por seis",
+        "D) Seis por cinco."
+      ],
+      "correcta": 0
+    },
+    {
+      "pregunta":
+          "Si divides una pizza en 8 partes iguales y tomas 3 partes, ¿qué fracción de la pizza has tomado?",
+      "respuestas": ["A) 3/5", "B) 8/3", "C) 1/3", "D) 3/8"],
+      "correcta": 3
+    },
+    {
+      "pregunta": "¿Qué representa el denominador en una fracción?",
+      "respuestas": [
+        "A) La cantidad de partes que se toman del total.",
+        "B) El tipo de fracción.",
+        "C) La cantidad total de partes en que se divide el todo.",
+        "D) La línea que separa el numerador del denominador."
+      ],
+      "correcta": 2
+    },
+    {
+      "pregunta":
+          "¿Qué fracción representa una parte de un todo dividido en 4 partes iguales?",
+      "respuestas": ["A) 1/2", "B) 1/3", "C) 1/4", "D) 1/5"],
+      "correcta": 2
+    },
+    {
+      "pregunta":
+          "Si un pastel se corta en 6 partes iguales y te comes 4 partes, ¿qué fracción del pastel has comido?",
+      "respuestas": ["A) 4/6", "B) 2/3", "C) 1/3", "D) 5/6"],
+      "correcta": 1
+    },
+    {
+      "pregunta":
+          "¿Cómo se llama una fracción donde el numerador es mayor que el denominador?",
+      "respuestas": [
+        "A) Fracción propia",
+        "B) Fracción impropia",
+        "C) Fracción mixta",
+        "D) Fracción decimal"
+      ],
+      "correcta": 1
+    },
+    {
+      "pregunta": "¿Cuál es el valor de la fracción 3/3?",
+      "respuestas": ["A) 0", "B) 1", "C) 3", "D) Ninguno de los anteriores"],
+      "correcta": 1
+    },
+    {
+      "pregunta":
+          "Si una fracción tiene un numerador de 5 y un denominador de 15, ¿cuál es la fracción simplificada?",
+      "respuestas": ["A) 1/3", "B) 5/3", "C) 1/5", "D) 3/5"],
+      "correcta": 0
+    },
+    {
+      "pregunta": "¿Qué fracción representa el número uno?",
+      "respuestas": ["A) 1/10", "B) 10/10", "C) 1/100", "D) 100/100"],
+      "correcta": 1
+    },
+  ];
 
   @override
   void initState() {
@@ -29,34 +107,37 @@ class _EjercicioConceptoPageState extends State<EjercicioConceptoPage> {
 
   void loadData() {
     setState(() {
-      _selectedRespuesta1 = -1;
-      _selectedRespuesta2 = -1;
-      _selectedRespuesta3 = -1;
-      _selectedRespuesta4 = -1;
+      _selectedRespuestas = List<int?>.filled(4, -1);
+      _preguntasSeleccionadas = _seleccionarPreguntasAlAzar(4);
     });
   }
 
-  void _handleRespuesta(int index, Function(int) updateSelected) {
+  List<Map<String, dynamic>> _seleccionarPreguntasAlAzar(int cantidad) {
+    final random = Random();
+    final indicesSeleccionados = <int>{};
+
+    while (indicesSeleccionados.length < cantidad) {
+      indicesSeleccionados.add(random.nextInt(_todasLasPreguntas.length));
+    }
+
+    return indicesSeleccionados
+        .map((index) => _todasLasPreguntas[index])
+        .toList();
+  }
+
+  void _handleRespuesta(int preguntaIndex, int respuestaIndex) {
     setState(() {
-      updateSelected(index);
+      _selectedRespuestas[preguntaIndex] = respuestaIndex;
     });
   }
 
   void _validarRespuestas() async {
-    List<int> respuestasCorrectas = [1, 0, 0, 2];
     double puntaje = 0;
 
-    if (_selectedRespuesta1 == respuestasCorrectas[0]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta2 == respuestasCorrectas[1]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta3 == respuestasCorrectas[2]) {
-      puntaje += 25;
-    }
-    if (_selectedRespuesta4 == respuestasCorrectas[3]) {
-      puntaje += 25;
+    for (int i = 0; i < _preguntasSeleccionadas.length; i++) {
+      if (_selectedRespuestas[i] == _preguntasSeleccionadas[i]['correcta']) {
+        puntaje += 25;
+      }
     }
 
     String mensaje;
@@ -104,7 +185,8 @@ class _EjercicioConceptoPageState extends State<EjercicioConceptoPage> {
           height: 210,
           function: () {
             Navigator.of(context).pop();
-            final navigator = Provider.of<NavigatorProvider>(context, listen: false);
+            final navigator =
+                Provider.of<NavigatorProvider>(context, listen: false);
             navigator.push(page: "tema-inicio-page");
           },
           widthButton: 30,
@@ -137,30 +219,6 @@ class _EjercicioConceptoPageState extends State<EjercicioConceptoPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<String> respuestas1 = [
-      "A) La cantidad total de partes en que se divide el todo.",
-      "B) La cantidad de partes que se toman del total.",
-      "C) El tipo de fracción.",
-      "D) La línea que separa el numerador del denominador."
-    ];
-
-    List<String> respuestas2 = [
-      "A) Cinco de seis.",
-      "B) Seis de cinco.",
-      "C) Cinco por seis",
-      "D) Seis por cinco."
-    ];
-
-    List<String> respuestas3 = ["A) 3/8", "B) 8/3", "C) 1/3", "D) 3/5"];
-
-    List<String> respuestas4 = [
-      "A) La cantidad de partes que se toman del total.",
-      "B) El tipo de fracción.",
-      "C) La cantidad total de partes en que se divide el todo.",
-      "D) La línea que separa el numerador del denominador."
-    ];
-
     return Scaffold(
         body: SizedBox(
             child: Padding(
@@ -195,85 +253,33 @@ class _EjercicioConceptoPageState extends State<EjercicioConceptoPage> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              Pregunta(
-                                pregunta:
-                                    "¿Qué representa el numerador en una fracción?",
-                                respuestas: respuestas1,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta1 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
-                              Pregunta(
-                                pregunta: "¿Cómo se lee la fracción 5/6?",
-                                respuestas: respuestas2,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta2 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
-                              Pregunta(
-                                pregunta:
-                                    "Si divides una pizza en 8 partes iguales y tomas 3 partes, ¿qué fracción de la pizza has tomado?",
-                                respuestas: respuestas3,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta3 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
-                              Pregunta(
-                                pregunta:
-                                    "¿Qué representa el denominador en una fracción?",
-                                respuestas: respuestas4,
-                                colorActivo: rojoColor,
-                                onRespuestaSeleccionada: (int index) {
-                                  _handleRespuesta(index, (newValue) {
-                                    _selectedRespuesta4 = newValue;
-                                  });
-                                },
-                              ),
-                              separadorVertical(context, 3),
-                              Divider(
-                                color: rojoColor, // Color de la línea
-                                thickness: 1, // Grosor de la línea
-                                indent: 2, // Espaciado desde el borde izquierdo
-                                endIndent:
-                                    2, // Espaciado desde el borde derecho
-                              ),
-                              separadorVertical(context, 3),
+                              Column(
+                                  children: List.generate(
+                                      _preguntasSeleccionadas.length, (index) {
+                                final pregunta = _preguntasSeleccionadas[index];
+                                return Column(children: [
+                                  Pregunta(
+                                    pregunta: pregunta['pregunta'],
+                                    respuestas: List<String>.from(
+                                        pregunta['respuestas']),
+                                    colorActivo: rojoColor,
+                                    onRespuestaSeleccionada:
+                                        (int respuestaIndex) {
+                                      _handleRespuesta(index, respuestaIndex);
+                                    },
+                                  ),
+                                  separadorVertical(context, 3),
+                                  Divider(
+                                    color: rojoColor, // Color de la línea
+                                    thickness: 1, // Grosor de la línea
+                                    indent:
+                                        2, // Espaciado desde el borde izquierdo
+                                    endIndent:
+                                        2, // Espaciado desde el borde derecho
+                                  ),
+                                  separadorVertical(context, 3),
+                                ]);
+                              })),
                               BotonAgregar(
                                 textButton: "Enviar",
                                 widthButton: 260,
@@ -283,10 +289,7 @@ class _EjercicioConceptoPageState extends State<EjercicioConceptoPage> {
                                 hoverColor: rojoColor,
                                 duration: 1000,
                                 onTap: () async {
-                                  if (_selectedRespuesta1 == -1 ||
-                                      _selectedRespuesta2 == -1 ||
-                                      _selectedRespuesta3 == -1 ||
-                                      _selectedRespuesta4 == -1) {
+                                  if (_selectedRespuestas.contains(-1)) {
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertaVolver(
