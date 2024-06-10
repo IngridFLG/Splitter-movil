@@ -27,24 +27,18 @@ class ResultadoServiceImpl with ResultadoService {
 
   @override
   Future<List<ResultadosModel>> listarResultados(
-      String token, Map<String, dynamic> resultados) async {
-    final String url = '$urlBase/splitter/v1/resultados/results';
+      String token, int idUsuario, int idTema) async {
+    final String url = '$urlBase/splitter/v1/resultados/results?idTema=$idTema&idUser=$idUsuario';
 
     final headers = <String, String>{
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     };
 
-    final request = http.Request(
-      'GET',
-      Uri.parse(url),
-    )..headers.addAll(headers);
-    request.body = jsonEncode(resultados);
-    final response  = await request.send();
+    final response = await http.get(Uri.parse(url), headers: headers);
 
     if (response.statusCode == 200) {
-      final responseBody = await response.stream.bytesToString();
-      final decoded = jsonDecode(responseBody);
+      final decoded = jsonDecode(response.body);
       List<ResultadosModel> resultados = List<ResultadosModel>.from(
         decoded.map((json) => ResultadosModel.fromJson(json)),
       );

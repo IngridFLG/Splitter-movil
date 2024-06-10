@@ -31,14 +31,13 @@ class _ConceptoResultadoPageState extends State<ConceptoResultadoPage> {
     String token = usuarioProvider.token!;
     int usuarioId = usuarioProvider.usuario!.id;
     int temaId = usuarioProvider.buscarTemaPorNombre("Concepto de fracción")!;
-    Map<String, dynamic> query = {"idTema": temaId, "idUser": usuarioId};
 
     final servicePorvider =
         Provider.of<ServicesProvider>(context, listen: false);
     final response =
-        await servicePorvider.resultadoService.listarResultados(token, query);
+        await servicePorvider.resultadoService.listarResultados(token, usuarioId, temaId);
     setState(() {
-      resultados = [];
+      resultados = response;
       isLoading = false;
     });
   }
@@ -94,7 +93,7 @@ class _ConceptoResultadoPageState extends State<ConceptoResultadoPage> {
                                     child: CircularProgressIndicator())
                                 : Column(children: [
                                     SizedBox(
-                                      height: size.height * 0.6,
+                                      height: size.height * 0.55,
                                       child: SingleChildScrollView(
                                         physics: const BouncingScrollPhysics(),
                                         scrollDirection: Axis.vertical,
@@ -110,8 +109,7 @@ class _ConceptoResultadoPageState extends State<ConceptoResultadoPage> {
                                                   bottom: 12.0,
                                                 ),
                                                 child: _WrapType(
-                                                  puntaje: resultados![index]
-                                                      .puntaje,
+                                                  puntaje: resultados![index].puntaje,
                                                 ),
                                               ),
                                           ],
@@ -136,17 +134,16 @@ class _WrapType extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     String assetPath = "";
-    if (puntaje >= 0 && puntaje <= 50) {
-      assetPath = "assets/imagenes/estrella2.png";
+    if (puntaje > 75 && puntaje <= 100) {
+      assetPath = "assets/imagenes/estrella4.png";
     } else if (puntaje > 50 && puntaje <= 75) {
       assetPath = "assets/imagenes/estrella3.png";
-    } else if (puntaje > 75 && puntaje <= 100) {
-      assetPath = "assets/imagenes/estrella4.png";
     } else {
-      assetPath =
-          "assets/imagenes/documento.png"; // Default image if score is out of range
+      assetPath = "assets/imagenes/estrella2.png";
     }
+
     return Container(
+      width: 150,
       decoration: BoxDecoration(
           color: grisClaColor, borderRadius: BorderRadius.circular(20)),
       child: Column(
@@ -157,15 +154,18 @@ class _WrapType extends StatelessWidget {
             height: size.height * 0.12,
           ),
           Container(
-            decoration: BoxDecoration(
-                color: rojoColor,
-                borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20))),
-            width: 100,
-            child: texto(
-                "$puntaje", fontMedium, bigSize, blancoColor, TextAlign.center),
-          ),
+              decoration: BoxDecoration(
+                  color: rojoColor,
+                  borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))),
+              width: 150,
+              child: Column(children: [
+                texto("Puntaje: $puntaje", fontMedium, bigSize, blancoColor,
+                    TextAlign.center),
+                texto("Preguntas correctas: 4/${puntaje ~/ 25}", fontMedium,
+                    bigSize, blancoColor, TextAlign.center),
+              ])),
         ],
       ),
     );

@@ -144,7 +144,7 @@ class _EjercicioEquivalenciaPageState extends State<EjercicioEquivalenciaPage> {
 
     String token = usuarioProvider.token!;
     int usuarioId = usuarioProvider.usuario!.id;
-    int temaId = usuarioProvider.buscarTemaPorNombre("Simplificar fracciones")!;
+    int temaId = usuarioProvider.buscarTemaPorNombre("Fracciones equivalentes")!;
     ResultadoformModel resultado = ResultadoformModel(
         puntaje: puntaje, idTema: temaId, idUsuario: usuarioId);
 

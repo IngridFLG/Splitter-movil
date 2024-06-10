@@ -71,6 +71,37 @@ class _EjemplosSimplificarPageState extends State<EjemplosSimplificarPage> {
                                                 color: rojoColor,
                                               ),
                                             ),
+                                            WidgetSpan(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertaVolver(
+                                                      width: 300,
+                                                      height: 250,
+                                                      function: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      widthButton: 30,
+                                                      textoBoton: 'Volver',
+                                                      image: Image.asset(
+                                                          'assets/imagenes/warning.jpg',
+                                                          height: 0),
+                                                      mensaje:
+                                                          "Un número primo es un número natural mayor que 1 que tiene únicamente dos divisores positivos distintos: él mismo y el 1. \nEjemplos de números primos: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, ...",
+                                                      dobleBoton: false,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Icon(
+                                                  Icons.help_outline,
+                                                  color: rojoColor,
+                                                  size: 24.0,
+                                                ),
+                                              ),
+                                            ),
                                             TextSpan(
                                               text:
                                                   "Descomponemos el numerador y el denominador en sus factores primos:",
