@@ -5,4 +5,5 @@ import 'package:splitter_movil_frontend/src/models/resultado_model.dart';
 mixin ResultadoService {
   Future<Response> registrarResultado(String token, ResultadoformModel resultado);
 
+  Future<List<ResultadosModel>> listarResultados(String token, Map<String, dynamic> resultados);
 }

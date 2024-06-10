@@ -30,6 +30,11 @@ final Map<String, Widget> _pages = {
 
   // Resultados
   ResultadosPage.name: const ResultadosPage(),
+  ConceptoResultadoPage.name: const ConceptoResultadoPage(),
+  SimplificarResultadoPage.name: const SimplificarResultadoPage(),
+  EquivalenciaResultadoPage.name: const EquivalenciaResultadoPage(),
+  SumarResultadoPage.name: const SumarResultadoPage(),
+  MultiResultadoPage.name: const MultiResultadoPage(),
 };
 
 final Map<int, String> _index = {

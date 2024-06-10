@@ -28,35 +28,31 @@ class ResultadoformModel {
     };
 }
 
-
 ResultadosModel resultadosModelFromJson(String str) => ResultadosModel.fromJson(json.decode(str));
 
 String resultadosModelToJson(ResultadosModel data) => json.encode(data.toJson());
 
 class ResultadosModel {
-    int id;
     double puntaje;
-    int idTema;
-    int idUsuario;
+    String username;
+    String tema;
 
     ResultadosModel({
-        required this.id,
         required this.puntaje,
-        required this.idTema,
-        required this.idUsuario,
+        required this.username,
+        required this.tema,
     });
 
     factory ResultadosModel.fromJson(Map<String, dynamic> json) => ResultadosModel(
-        id: json["id"],
-        puntaje: json["puntaje"]?.toDouble(),
-        idTema: json["idTema"],
-        idUsuario: json["idUsuario"],
+        puntaje: json["puntaje"],
+        username: json["username"],
+        tema: json["tema"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
         "puntaje": puntaje,
-        "idTema": idTema,
-        "idUsuario": idUsuario,
+        "username": username,
+        "tema": tema,
     };
 }
+
