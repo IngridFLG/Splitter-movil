@@ -164,7 +164,7 @@ class _WrapType extends StatelessWidget {
               child: Column(children: [
                 texto("Puntaje: $puntaje", fontMedium, bigSize, blancoColor,
                     TextAlign.center),
-                texto("Preguntas correctas: 4/${puntaje ~/ 25}", fontMedium,
+                texto("Preguntas correctas: ${puntaje ~/ 25}/4", fontMedium,
                     bigSize, blancoColor, TextAlign.center),
               ])),
         ],
