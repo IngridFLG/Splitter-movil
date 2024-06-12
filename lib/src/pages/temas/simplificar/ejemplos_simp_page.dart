@@ -90,7 +90,7 @@ class _EjemplosSimplificarPageState extends State<EjemplosSimplificarPage> {
                                                           'assets/imagenes/warning.jpg',
                                                           height: 0),
                                                       mensaje:
-                                                          "Un número primo es un número natural mayor que 1 que tiene únicamente dos divisores positivos distintos: él mismo y el 1. \nEjemplos de números primos: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, ...",
+                                                          "Un número primo es un número natural mayor que 1 que tiene únicamente dos divisores positivos distintos: él mismo y el 1. Ejemplos de números primos: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, ...",
                                                       dobleBoton: false,
                                                     ),
                                                   );
