@@ -209,6 +209,37 @@ class _SumarPageState extends State<SumarPage> {
                                       color: rojoColor,
                                     ),
                                   ),
+								  WidgetSpan(
+                                    child: GestureDetector(
+                                        onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertaVolver(
+                                                      width: 320,
+                                                      height: 270,
+                                                      function: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      widthButton: 30,
+                                                      textoBoton: 'Volver',
+                                                      image: Image.asset(
+                                                          'assets/imagenes/warning.jpg',
+                                                          height: 0),
+                                                      mensaje:
+                                                          "El MCM es el número más pequeño que puede ser dividido   exactamente por cada uno de los números dados sin dejar residuo.",
+                                                      dobleBoton: false,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Icon(
+                                                  Icons.help_outline,
+                                                  color: rojoColor,
+                                                  size: 24.0,
+                                                ),
+                                              ),
+                                            ),
                                   TextSpan(
                                     text: "de los denominadores. Luego, ",
                                     style: TextStyle(

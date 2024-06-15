@@ -206,6 +206,37 @@ class _EjemplosSimplificarPageState extends State<EjemplosSimplificarPage> {
                                                 color: rojoColor,
                                               ),
                                             ),
+											WidgetSpan(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertaVolver(
+                                                      width: 320,
+                                                      height: 270,
+                                                      function: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      widthButton: 30,
+                                                      textoBoton: 'Volver',
+                                                      image: Image.asset(
+                                                          'assets/imagenes/warning.jpg',
+                                                          height: 0),
+                                                      mensaje:
+                                                          "El máximo común divisor (MCD) es el mayor número que divide exactamente a dos o más números sin dejar residuo. El residuo de una división es la cantidad que sobra después de dividir un número entero entre otro.",
+                                                      dobleBoton: false,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Icon(
+                                                  Icons.help_outline,
+                                                  color: rojoColor,
+                                                  size: 24.0,
+                                                ),
+                                              ),
+                                            ),
                                             TextSpan(
                                               text:
                                                   "Multiplicamos los factores comunes:",
