@@ -5,6 +5,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:splitter_movil_frontend/src/config/environment/environment.dart';
 import 'package:splitter_movil_frontend/src/providers/navigator_provider.dart';
 import 'package:splitter_movil_frontend/src/config/router/home_rutas.dart';
+import 'package:splitter_movil_frontend/src/pages/inicio/login_page.dart';
+
+import '../providers/usuario_provider.dart';
 
 class HomePage extends StatefulWidget {
   static const name = 'home-page';
@@ -73,10 +76,23 @@ class _HomePageState extends State<HomePage> {
             animationCurve: Curves.linear,
             animationDuration: const Duration(milliseconds: 300),
             onTap: (int tappedIndex) {
-              setState(() {
-                provider.push(
-                    index: tappedIndex, page: getNamePageByIndex(tappedIndex));
-              });
+              if (tappedIndex == 2) {
+                Provider.of<NavigatorProvider>(context, listen: false).clear();
+                Provider.of<UsuarioProvider>(context, listen: false)
+                    .vaciarUsuarioProvider();
+                // Navegar a la página de inicio de sesión sin el Navbar
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                setState(() {
+                  provider.push(
+                    index: tappedIndex,
+                    page: getNamePageByIndex(tappedIndex),
+                  );
+                });
+              }
             },
             letIndexChange: (index) => true,
           ),

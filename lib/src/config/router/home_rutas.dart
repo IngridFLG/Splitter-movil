@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splitter_movil_frontend/src/pages/pages.dart';
 
-
 final Map<String, Widget> _pages = {
   //inicio
   TemaInicio.name: const TemaInicio(),
